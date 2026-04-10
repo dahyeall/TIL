@@ -12,17 +12,14 @@
 # 셀 1: 패키지 설치 (Colab에서 이 블록만 별도 실행)
 # ─────────────────────────────────────────────────────────────
 # !pip install -q \
-#   gradio==4.44.1 \
-#   langchain==0.3.0 \
-#   langchain-openai==0.2.0 \
-#   langchain-community==0.3.0 \
-#   langchain-chroma==0.1.4 \
-#   chromadb==0.5.5 \
-#   pypdf==4.3.1 \
-#   sentence-transformers==3.1.1 \
-#   beautifulsoup4==4.12.3 \
-#   requests==2.32.3 \
-#   tavily-python==0.5.0
+#   "gradio>=4.44,<5.0" \
+#   "langchain>=0.3,<0.4" \
+#   "langchain-openai>=0.2,<0.3" \
+#   "langchain-community>=0.3,<0.4" \
+#   "langchain-chroma>=0.1.4" \
+#   pypdf \
+#   beautifulsoup4 \
+#   requests
 
 # ─────────────────────────────────────────────────────────────
 # 셀 2: 앱 실행 (아래 코드 전체를 한 셀에서 실행)
