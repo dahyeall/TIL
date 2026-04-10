@@ -10,16 +10,20 @@
 
 # ─────────────────────────────────────────────────────────────
 # 셀 1: 패키지 설치 (Colab에서 이 블록만 별도 실행)
+#
+# ※ 설치 후 "dependency conflicts" 경고가 떠도 무시하세요.
+#    Colab 기본 패키지(google-adk 등)와의 충돌 경고일 뿐,
+#    실제 설치는 완료된 상태입니다.
+#    설치가 끝나면 [런타임 → 세션 다시 시작] 후 셀 2를 실행하세요.
 # ─────────────────────────────────────────────────────────────
 # !pip install -q \
-#   "gradio>=4.44,<5.0" \
-#   "langchain>=0.3,<0.4" \
-#   "langchain-openai>=0.2,<0.3" \
-#   "langchain-community>=0.3,<0.4" \
+#   "gradio>=4.0" \
+#   "langchain-openai>=0.2" \
+#   "langchain-community>=0.3" \
 #   "langchain-chroma>=0.1.4" \
+#   "langchain-text-splitters>=0.3" \
 #   pypdf \
-#   beautifulsoup4 \
-#   requests
+#   beautifulsoup4
 
 # ─────────────────────────────────────────────────────────────
 # 셀 2: 앱 실행 (아래 코드 전체를 한 셀에서 실행)
@@ -117,7 +121,7 @@ def run_gap_analysis() -> Tuple[str, str, str, str, str]:
     if not _state["jd_text"]:
         return ("❌ JD를 먼저 입력하세요.",) + ("",) * 4
 
-    from langchain.schema import HumanMessage, SystemMessage
+    from langchain_core.messages import HumanMessage, SystemMessage
 
     user_msg = (
         f"## 이력서\n{_state['resume_text'][:3000]}\n\n"
@@ -170,9 +174,8 @@ def crawl_and_index(company_name: str, blog_url: str) -> str:
         if len(raw_text) < 100:
             return "⚠️ 페이지에서 충분한 텍스트를 추출하지 못했습니다. URL을 확인하세요."
 
-        from langchain.text_splitter import RecursiveCharacterTextSplitter
+        from langchain_text_splitters import RecursiveCharacterTextSplitter
         from langchain_chroma import Chroma
-        from langchain.schema import Document
 
         splitter = RecursiveCharacterTextSplitter(
             chunk_size=500,
@@ -239,7 +242,7 @@ def start_interview(company_name: str) -> Tuple[List, str, str]:
     if not company_name:
         return [], "❌ 기업을 선택하세요.", ""
 
-    from langchain.schema import HumanMessage, SystemMessage
+    from langchain_core.messages import HumanMessage, SystemMessage
 
     company_id = re.sub(r"[^a-z0-9_]", "_", company_name.lower())
     context_chunks = []
@@ -285,7 +288,7 @@ def send_answer(
     if not _state["llm"]:
         return "", chat_history + [{"role": "assistant", "content": "❌ API 키를 설정하세요."}]
 
-    from langchain.schema import HumanMessage, SystemMessage
+    from langchain_core.messages import HumanMessage, SystemMessage
 
     company_id = re.sub(r"[^a-z0-9_]", "_", company_name.lower()) if company_name else ""
 
